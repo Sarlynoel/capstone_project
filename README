@@ -63,3 +63,83 @@ docker ps
 - Customize the HTML files and configurations as needed.
 - Ensure correct permissions and file paths in your Dockerfile.
 - Test your setup thoroughly before deploying.
+
+
+
+
+
+
+
+               +-------------------------+        +-------------------------+
+               |        EC2 Instance     |        |        Docker Hub       |
+               |         (Step 1)        |        |        (Step 3)         |
+               |                         |        |                         |
+               |   - Launch EC2 instance |        |   - Build Docker image  |
+               |   - Install Docker      |        |   - Push image to ECR   |
+               |                         |        |                         |
+               +-----------|-------------+        +------------|------------+
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+               +-----------|-------------+        +------------|------------+
+               |       ECR Repository    |        |     Docker Image        |
+               |         (Step 4)        |        |     (Step 5)            |
+               |                         |        |                         |
+               |   - Create ECR repository |       |   - Docker image stored |
+               |                         |        |     in ECR              |
+               +-----------|-------------+        +------------|------------+
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+               +-----------|-------------+        +------------|------------+
+               |   Application Load      |        |        ECS Cluster      |
+               |   Balancer (Step 6)     |        |        (Step 7)        |
+               |                         |        |                         |
+               |   - Create ALB          |        |   - Create ECS cluster  |
+               |   - Configure listeners |        |   - Configure networking|
+               |   - Set target groups   |        |     and security        |
+               +-----------|-------------+        +------------|------------+
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+               +-----------|-------------+        +------------|------------+
+               |  ECS Task Definitions  |        |      ECS Service        |
+               |     (Step 7)            |        |        (Step 8)        |
+               |                         |        |                         |
+               |   - Define task         |        |   - Create ECS service  |
+               |     definitions         |        |   - Configure scaling   |
+               |   - Specify containers  |        |     and deployment      |
+               |     and resources       |        |     parameters          |
+               +-------------------------+        +-------------------------+
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+                           |                                  |
+               +-------------------------+        +-------------------------+
+               |         Validation      |        |         Validation      |
+               |         (Step 9)        |        |         (Step 9)        |
+               |                         |        |                         |
+               +-------------------------+        +-------------------------+
+
+
+
+
