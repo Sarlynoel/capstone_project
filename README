@@ -1,0 +1,65 @@
+# Project README
+
+## Overview:
+
+This project involves setting up a Docker environment for a web application using Nginx.
+
+## Instructions:
+
+### 1. Dockerfile Setup:
+
+- Ensure you have Docker installed on your machine.
+- Create a Dockerfile in your project directory.
+
+### 2. Dockerfile Configuration:
+
+- Use the official Nginx image as the base image by adding the following line to your Dockerfile:
+
+FROM nginx:latest
+
+- Set the working directory inside the container:
+WORKDIR /usr/share/nginx/html
+
+- Copy HTML files from your local machine to the container:
+COPY page1.html page2.html ./
+
+- Install additional packages or dependencies if needed:
+
+RUN apt-get update && apt-get install -y package_name
+
+- Expose port 80 to allow incoming traffic:
+EXPOSE 80
+
+- Start Nginx server when the container starts:
+CMD ["nginx", "-g", "daemon off;"]
+
+
+### 3. Building Docker Image:
+
+- Run the following command to build the Docker image:
+
+docker build -t my-nginx-image .
+
+### 4. Running Docker Container:
+
+- Once the image is built, create and run a container using the following command:
+docker run -d -p 80:80 --name my-nginx-container my-nginx-image
+
+
+
+### 5. Verification:
+
+- Verify that the container is running by executing:
+docker ps
+
+- Access the web application through the browser using http://localhost:80 or your machine's IP address.
+
+## Conclusion:
+
+- This setup will deploy a Nginx web server inside a Docker container, serving HTML files and listening on port 80.
+
+## Additional Tips:
+
+- Customize the HTML files and configurations as needed.
+- Ensure correct permissions and file paths in your Dockerfile.
+- Test your setup thoroughly before deploying.
