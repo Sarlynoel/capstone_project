@@ -1,145 +1,68 @@
-# Capstone project with AWS
+# Stateless AWS Web Application Deployment on Container Orchestration
 
-## Overview:
+Welcome to the project repository for deploying a stateless web application on AWS utilizing container orchestration. This project focuses on achieving high resilience, security, and fault tolerance.
 
-This project involves setting up a Docker environment for a web application using Nginx.
+## Objective
 
-## Instructions:
+The objective of this project is to design and deploy a stateless web application on AWS utilizing container orchestration, ensuring high resilience, security, and fault tolerance.
 
-### 1. Dockerfile Setup:
+## Architecture Overview
 
-- Ensure you have Docker installed on your machine.
-- Create a Dockerfile in your project directory.
+This section outlines the architectural requirements and objectives for the deployment of a static website on ECS:
 
-### 2. Dockerfile Configuration:
+- **Functionality and Features:** Define the features required for the website.
+- **User Flow:** Describe the expected user flow and interaction points.
+- **Security Measures:** Specify security measures such as IAM roles, encryption, and access controls.
+- **Scalability:** Define scalability requirements to handle varying levels of traffic.
 
-- Use the official Nginx image as the base image by adding the following line to your Dockerfile:
+## Application Development
 
-FROM nginx:latest
+This section covers the development of a simple static website with two landing pages using HTML:
 
-- Set the working directory inside the container:
-WORKDIR /usr/share/nginx/html
+- **HTML Files:** HTML files for the landing pages with relevant content.
+- **Design:** Keep the design minimalistic and focused on delivering the intended information.
+- **Compatibility:** Ensure cross-browser compatibility and responsive design for various devices.
 
-- Copy HTML files from your local machine to the container:
-COPY page1.html page2.html ./
+## Containerization with Docker
 
-- Install additional packages or dependencies if needed:
+This section explains the process of containerizing the web application using Docker:
 
-RUN apt-get update && apt-get install -y package_name
+- **EC2 Instance Setup:** Set up an EC2 instance and install Docker for containerization.
+- **Dockerfile:** Define the environment and dependencies for running the web application.
+- **Containerization:** Copy the HTML files into the Docker container.
+- **Verification:** Build the Docker image and run a container instance to verify functionality.
 
-- Expose port 80 to allow incoming traffic:
-EXPOSE 80
+## Amazon ECR Configuration
 
-- Start Nginx server when the container starts:
-CMD ["nginx", "-g", "daemon off;"]
+This section covers the configuration of Amazon Elastic Container Registry (ECR) to store the Docker image:
 
+- **AWS CLI Configuration:** Configure AWS CLI and authenticate with your AWS account.
+- **Tagging and Pushing:** Tag the Docker image with the ECR repository URI and push it to the designated repository.
 
-### 3. Building Docker Image:
+## Infrastructure Coding with Terraform
 
-- Run the following command to build the Docker image:
+This section explains the provisioning of infrastructure resources using Terraform:
 
-docker build -t my-nginx-image .
+- ## Infrastructure Coding with Terraform
 
-### 4. Running Docker Container:
+This section explains the provisioning of infrastructure resources using Terraform:
 
-- Once the image is built, create and run a container using the following command:
-docker run -d -p 80:80 --name my-nginx-container my-nginx-image
+- **Terraform Scripts:** Terraform scripts were written to define various infrastructure components required for the deployment:
+  - **ECS Cluster:** Provisioned an ECS cluster to manage containerized applications.
+  - **ECR Repository:** Created an Elastic Container Registry repository to store Docker images.
+  - **Load Balancer:** Configured a public load balancer to distribute traffic to the ECS cluster.
+  - **Security Groups:** Defined security groups to control inbound and outbound traffic to the ECS instances.
+  - **IAM Roles:** Specified IAM roles with appropriate permissions for ECS tasks.
 
+## Additional Instructions
 
+- Make sure to review and adjust your security group settings according to your specific security requirements.
+- Ensure that subnets and security groups specified in ALB and ECS configurations allow inbound and outbound traffic as necessary.
 
-### 5. Verification:
+- Verify that health checks for ECS service and target group are configured correctly.
+- Ensure instances are healthy and able to serve traffic.
+- If using EC2 instances with ECS, ensure they're running and healthy in the ECS cluster.
+- Check logs and metrics provided by AWS (e.g., CloudWatch logs, ALB access logs, ECS container logs) for errors or issues aiding diagnosis.
+- Test the Terraform scripts locally and deploy the infrastructure to AWS.
 
-- Verify that the container is running by executing:
-docker ps
-
-- Access the web application through the browser using http://localhost:80 or your machine's IP address.
-
-## Conclusion:
-
-- This setup will deploy a Nginx web server inside a Docker container, serving HTML files and listening on port 80.
-
-## Additional Tips:
-
-- Customize the HTML files and configurations as needed.
-- Ensure correct permissions and file paths in your Dockerfile.
-- Test your setup thoroughly before deploying.
-
-
-
-
-
-
-
-               +-------------------------+        +-------------------------+
-               |        EC2 Instance     |        |        Docker Hub       |
-               |         (Step 1)        |        |        (Step 3)         |
-               |                         |        |                         |
-               |   - Launch EC2 instance |        |   - Build Docker image  |
-               |   - Install Docker      |        |   - Push image to ECR   |
-               |                         |        |                         |
-               +-----------|-------------+        +------------|------------+
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-               +-----------|-------------+        +------------|------------+
-               |       ECR Repository    |        |     Docker Image        |
-               |         (Step 4)        |        |     (Step 5)            |
-               |                         |        |                         |
-               |   - Create ECR repository |       |   - Docker image stored |
-               |                         |        |     in ECR              |
-               +-----------|-------------+        +------------|------------+
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-               +-----------|-------------+        +------------|------------+
-               |   Application Load      |        |        ECS Cluster      |
-               |   Balancer (Step 6)     |        |        (Step 7)        |
-               |                         |        |                         |
-               |   - Create ALB          |        |   - Create ECS cluster  |
-               |   - Configure listeners |        |   - Configure networking|
-               |   - Set target groups   |        |     and security        |
-               +-----------|-------------+        +------------|------------+
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-               +-----------|-------------+        +------------|------------+
-               |  ECS Task Definitions  |        |      ECS Service        |
-               |     (Step 7)            |        |        (Step 8)        |
-               |                         |        |                         |
-               |   - Define task         |        |   - Create ECS service  |
-               |     definitions         |        |   - Configure scaling   |
-               |   - Specify containers  |        |     and deployment      |
-               |     and resources       |        |     parameters          |
-               +-------------------------+        +-------------------------+
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-                           |                                  |
-               +-------------------------+        +-------------------------+
-               |         Validation      |        |         Validation      |
-               |         (Step 9)        |        |         (Step 9)        |
-               |                         |        |                         |
-               +-------------------------+        +-------------------------+
-
-
-
-
+## 
