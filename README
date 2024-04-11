@@ -1,10 +1,6 @@
-# Stateless AWS Web Application Deployment on Container Orchestration
+# Stateless AWS Web Application Deployment on ECS
 
-Welcome to the project repository for deploying a stateless web application on AWS utilizing container orchestration. This project focuses on achieving high resilience, security, and fault tolerance.
-
-## Objective
-
-The objective of this project is to design and deploy a stateless web application on AWS utilizing container orchestration, ensuring high resilience, security, and fault tolerance.
+Welcome to the project repository for deploying a stateless web application on AWS utilizing ECS. This project focuses on designing a stateless AWS web application hosted in ECS with high resilience, security, and fault tolerance, utilizing only AWS service
 
 ## Architecture Overview
 
@@ -35,34 +31,39 @@ This section explains the process of containerizing the web application using Do
 ## Amazon ECR Configuration
 
 This section covers the configuration of Amazon Elastic Container Registry (ECR) to store the Docker image:
+- *ECR Repository:** Created an Elastic Container Registry repository to store Docker images.
 
 - **AWS CLI Configuration:** Configure AWS CLI and authenticate with your AWS account.
 - **Tagging and Pushing:** Tag the Docker image with the ECR repository URI and push it to the designated repository.
+
+
 
 ## Infrastructure Coding with Terraform
 
 This section explains the provisioning of infrastructure resources using Terraform:
 
-- ## Infrastructure Coding with Terraform
+- **Terraform Scripts:** Terraform scripts were written to define various infrastructure components required for the deployment, including:
 
-This section explains the provisioning of infrastructure resources using Terraform:
-
-- **Terraform Scripts:** Terraform scripts were written to define various infrastructure components required for the deployment:
   - **ECS Cluster:** Provisioned an ECS cluster to manage containerized applications.
-  - **ECR Repository:** Created an Elastic Container Registry repository to store Docker images.
+  
   - **Load Balancer:** Configured a public load balancer to distribute traffic to the ECS cluster.
-  - **Security Groups:** Defined security groups to control inbound and outbound traffic to the ECS instances.
-  - **IAM Roles:** Specified IAM roles with appropriate permissions for ECS tasks.
 
+  - **Task Definitions:** Defined task definitions specifying the configuration for individual ECS tasks, such as Docker image, CPU, memory, and ports.
+
+  - **Service:** Created an ECS service to manage and maintain the desired number of tasks, ensuring high availability and scalability.
+
+  - **Target Group:** Created a target group associated with ECS tasks and registered with the load balancer to route traffic to the tasks.
+
+  - **Listener:** Configured a listener on the load balancer to forward incoming traffic to the target group.
+
+  - **Security Groups:** Defined security groups to control inbound and outbound traffic to the ECS instances, ensuring network security.
+
+ 
 ## Additional Instructions
 
 - Make sure to review and adjust your security group settings according to your specific security requirements.
 - Ensure that subnets and security groups specified in ALB and ECS configurations allow inbound and outbound traffic as necessary.
-
 - Verify that health checks for ECS service and target group are configured correctly.
 - Ensure instances are healthy and able to serve traffic.
 - If using EC2 instances with ECS, ensure they're running and healthy in the ECS cluster.
 - Check logs and metrics provided by AWS (e.g., CloudWatch logs, ALB access logs, ECS container logs) for errors or issues aiding diagnosis.
-- Test the Terraform scripts locally and deploy the infrastructure to AWS.
-
-## 
